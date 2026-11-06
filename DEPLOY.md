@@ -38,22 +38,27 @@ Online đã dùng), KHÔNG phải build từ Git.
 - Verify live: xem `dichoi_verify.py` (tự lấy PANEL_KEY từ compose env lúc
   chạy, chỉ in PASS/FAIL, không in mật khẩu).
 
-## KHÔNG BỀN — bước GitHub còn lại
+## ĐÃ BỀN — build từ GitHub (2026-11-06 tối)
 
-Bản live hiện tại **không bền**: code chỉ nằm trong container đang chạy.
-`compose.deploy` / redeploy tạo container mới từ image `node:22-alpine` sẽ
-mất code (chỉ còn `data/game-settings.json` trong volume
-`di-choi-online-data`). Để bền phải làm tiếp:
+Bản live hiện tại **đã bền**: code build từ repo GitHub, redeploy sẽ build
+lại từ repo chứ không mất code.
 
-1. Chủ kênh tạo repo trống `VuBLA2025/di-choi-online` trên github.com rồi chọn
-   trong GitHub App installation (App token không tự tạo repo được — đã thử
-   và bị 403 ngày 2026-11-06).
-2. Push toàn bộ `~/workspace/di-choi-online-deploy/` lên repo (nhánh `master`,
-   kèm `package-lock.json` để Docker build bằng `npm ci`).
+1. Chủ kênh đã tạo repo trống `VuBLA2025/di-choi-online` trên github.com và
+   chọn trong GitHub App installation (App token không tự tạo repo được — đã
+   thử và bị 403 ngày 2026-11-06).
+2. Push toàn bộ `~/workspace/di-choi-online-deploy/` (41 file text, 329 KB)
+   lên repo nhánh `master`, commit `b383adc682fc8b0c5cf58adf36aa7def8f7c3976`
+   (trên commit Initial `f4af3fc7` do GitHub tự tạo lúc lập repo với README;
+   nhánh `main` mặc định chỉ có README, không dùng — nhánh deploy là `master`).
 3. Đổi compose sang sourceType `github` (owner VuBLA2025, repo di-choi-online,
-   branch master, composePath `./docker-compose.yml`), giữ nguyên domain, port
-   4187 và env PANEL_KEY, rồi `compose.deploy` (KHÔNG dùng `compose.redeploy`).
-4. Verify live lại như dưới.
+   branch master, composePath `./docker-compose.yml`, composeFile rỗng,
+   githubId `0-f_X4vn1CYb3EnTqIaQo` — chung với Lớp Học Chữ/Đám Cưới), giữ
+   nguyên domain, port 4187 và env PANEL_KEY, rồi `compose.deploy` (KHÔNG dùng
+   `compose.redeploy`). Deployment `7aLqOCuZmiDxGY-cFS9pS` done 2026-11-06
+   14:10 UTC.
+4. Verify live lại: xem dưới (24/28 PASS lúc đầu, 4 FAIL chỉ do lỗi 520 nhất
+   thời của Cloudflare lúc tải bundle + damcuoi timeout — kiểm tra lại ngay
+   sau đó đều 200, bundle đủ nội dung).
 
 ## Nguồn
 
